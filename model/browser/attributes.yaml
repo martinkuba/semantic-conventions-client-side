@@ -101,10 +101,6 @@ attributes:
           value: "back_forward"
           stability: development
           brief: Navigation through the browser's history traversal, e.g. the back or forward button.
-        - id: prerender
-          value: "prerender"
-          stability: development
-          brief: Navigation to a page that was prerendered.
     stability: development
     brief: >
       The type of the navigation, as reported by
@@ -210,7 +206,8 @@ attributes:
     type: double
     stability: development
     brief: >
-      Time immediately before the request is dispatched to a service worker.
+      Time, in milliseconds relative to the time origin of the document, immediately before
+      the request is dispatched to a service worker.
     note: >
       Zero if the request is not intercepted by a service worker.
     examples: [0.0, 12.1]
@@ -219,61 +216,68 @@ attributes:
     type: double
     stability: development
     brief: >
-      Time of the start of the fetch that initiated the first redirect.
+      Time, in milliseconds relative to the time origin of the document, at the start of the
+      fetch that initiated the first redirect.
     note: >
-      Zero if there was no redirect, or if a redirect is not same-origin.
+      Zero if there was no redirect, or if the timing-allow checks fail.
     examples: [0.0]
 
   - key: browser.resource_timing.redirect_end
     type: double
     stability: development
     brief: >
-      Time immediately after receiving the last byte of the response of the last redirect.
+      Time, in milliseconds relative to the time origin of the document, immediately after
+      receiving the last byte of the response of the last redirect.
     note: >
-      Zero if there was no redirect, or if a redirect is not same-origin.
+      Zero if there was no redirect, or if the timing-allow checks fail.
     examples: [0.0]
 
   - key: browser.resource_timing.fetch_start
     type: double
     stability: development
     brief: >
-      Time immediately before the browser starts to fetch the resource.
+      Time, in milliseconds relative to the time origin of the document, immediately before
+      the browser starts to fetch the resource.
     examples: [1.2]
 
   - key: browser.resource_timing.domain_lookup_start
     type: double
     stability: development
     brief: >
-      Time immediately before the browser starts the domain name lookup for the resource.
+      Time, in milliseconds relative to the time origin of the document, immediately before
+      the browser starts the domain name lookup for the resource.
     examples: [1.4]
 
   - key: browser.resource_timing.domain_lookup_end
     type: double
     stability: development
     brief: >
-      Time immediately after the browser finishes the domain name lookup for the resource.
+      Time, in milliseconds relative to the time origin of the document, immediately after
+      the browser finishes the domain name lookup for the resource.
     examples: [3.6]
 
   - key: browser.resource_timing.connect_start
     type: double
     stability: development
     brief: >
-      Time immediately before the browser starts to establish the connection to the server.
+      Time, in milliseconds relative to the time origin of the document, immediately before
+      the browser starts to establish the connection to the server.
     examples: [3.6]
 
   - key: browser.resource_timing.connect_end
     type: double
     stability: development
     brief: >
-      Time immediately after the browser finishes establishing the connection to the server.
+      Time, in milliseconds relative to the time origin of the document, immediately after
+      the browser finishes establishing the connection to the server.
     examples: [12.8]
 
   - key: browser.resource_timing.secure_connection_start
     type: double
     stability: development
     brief: >
-      Time immediately before the browser starts the handshake process to secure the
-      connection.
+      Time, in milliseconds relative to the time origin of the document, immediately before
+      the browser starts the handshake process to secure the connection.
     note: >
       Zero if the resource is not fetched over a secure connection.
     examples: [6.0]
@@ -282,30 +286,37 @@ attributes:
     type: double
     stability: development
     brief: >
-      Time immediately before the browser starts requesting the resource from the server.
+      Time, in milliseconds relative to the time origin of the document, immediately before
+      the browser starts requesting the resource from the server.
     examples: [12.9]
 
   - key: browser.resource_timing.response_start
     type: double
     stability: development
     brief: >
-      Time immediately after the browser receives the first byte of the response.
+      Time, in milliseconds relative to the time origin of the document, immediately after
+      the browser receives the first byte of the response.
     examples: [38.1]
 
   - key: browser.resource_timing.response_end
     type: double
     stability: development
     brief: >
-      Time immediately after the browser receives the last byte of the resource, or immediately
-      before the transport connection is closed, whichever comes first.
+      Time, in milliseconds relative to the time origin of the document, immediately after
+      the browser receives the last byte of the resource, or immediately before the transport
+      connection is closed, whichever comes first.
     examples: [43.5]
 
   - key: browser.resource_timing.transfer_size
     type: int
     stability: development
     brief: >
-      The size, in bytes, of the fetched resource, including the response header fields and the
-      response payload body.
+      The transfer size of the resource, in bytes, as reported by the browser.
+    note: >
+      The browser uses a fixed 300-byte allowance for response headers, added to the encoded
+      body size. For locally cached responses the transfer size is zero; for revalidated cached
+      responses it is 300 bytes. This value is not an exact count of bytes transferred over the
+      network.
     examples: [4096]
 
   - key: browser.resource_timing.encoded_body_size
@@ -330,6 +341,9 @@ attributes:
       The network protocol used to fetch the resource, as identified by the
       [ALPN Protocol ID](https://www.rfc-editor.org/rfc/rfc7301.html).
     note: >
+      This attribute preserves the raw ALPN protocol ID reported by the browser.
+      `network.protocol.name` and `network.protocol.version` describe the protocol name and version
+      separately; for example, `h2` corresponds to `http` and `2`, respectively.
       Empty for cross-origin resources that are not served with a `Timing-Allow-Origin`
       response header field.
     examples: ["http/1.1", "h2", "h3"]

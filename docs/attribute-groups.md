@@ -27,22 +27,22 @@ Public attributes in this registry in the `browser` namespace.
 | `browser.navigation_timing.type` | `enum` | The type of the navigation, as reported by [`PerformanceNavigationTiming.type`](https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming/type). |
 | `browser.navigation_timing.unload_event_end` | `double` | Time, in milliseconds relative to the start of the navigation, immediately after the `unload` event handlers of the previous document finish running. |
 | `browser.navigation_timing.unload_event_start` | `double` | Time, in milliseconds relative to the start of the navigation, immediately before the `unload` event handlers of the previous document start to run. |
-| `browser.resource_timing.connect_end` | `double` | Time immediately after the browser finishes establishing the connection to the server. |
-| `browser.resource_timing.connect_start` | `double` | Time immediately before the browser starts to establish the connection to the server. |
+| `browser.resource_timing.connect_end` | `double` | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes establishing the connection to the server. |
+| `browser.resource_timing.connect_start` | `double` | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to establish the connection to the server. |
 | `browser.resource_timing.decoded_body_size` | `int` | The size, in bytes, of the message body after removing any applied content encoding. |
-| `browser.resource_timing.domain_lookup_end` | `double` | Time immediately after the browser finishes the domain name lookup for the resource. |
-| `browser.resource_timing.domain_lookup_start` | `double` | Time immediately before the browser starts the domain name lookup for the resource. |
+| `browser.resource_timing.domain_lookup_end` | `double` | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes the domain name lookup for the resource. |
+| `browser.resource_timing.domain_lookup_start` | `double` | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the domain name lookup for the resource. |
 | `browser.resource_timing.duration` | `double` | The total time, in milliseconds, taken to fetch the resource. |
 | `browser.resource_timing.encoded_body_size` | `int` | The size, in bytes, of the payload body as received from the network, before removing any applied content encoding. |
-| `browser.resource_timing.fetch_start` | `double` | Time immediately before the browser starts to fetch the resource. |
+| `browser.resource_timing.fetch_start` | `double` | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to fetch the resource. |
 | `browser.resource_timing.initiator_type` | `string` | The type of the resource that initiated the performance entry, as reported by [`PerformanceResourceTiming.initiatorType`](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/initiatorType). |
 | `browser.resource_timing.next_hop_protocol` | `string` | The network protocol used to fetch the resource, as identified by the [ALPN Protocol ID](https://www.rfc-editor.org/rfc/rfc7301.html). |
-| `browser.resource_timing.redirect_end` | `double` | Time immediately after receiving the last byte of the response of the last redirect. |
-| `browser.resource_timing.redirect_start` | `double` | Time of the start of the fetch that initiated the first redirect. |
+| `browser.resource_timing.redirect_end` | `double` | Time, in milliseconds relative to the time origin of the document, immediately after receiving the last byte of the response of the last redirect. |
+| `browser.resource_timing.redirect_start` | `double` | Time, in milliseconds relative to the time origin of the document, at the start of the fetch that initiated the first redirect. |
 | `browser.resource_timing.render_blocking_status` | `enum` | The render-blocking status of the resource, as reported by [`PerformanceResourceTiming.renderBlockingStatus`](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/renderBlockingStatus). |
-| `browser.resource_timing.request_start` | `double` | Time immediately before the browser starts requesting the resource from the server. |
-| `browser.resource_timing.response_end` | `double` | Time immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. |
-| `browser.resource_timing.response_start` | `double` | Time immediately after the browser receives the first byte of the response. |
-| `browser.resource_timing.secure_connection_start` | `double` | Time immediately before the browser starts the handshake process to secure the connection. |
-| `browser.resource_timing.transfer_size` | `int` | The size, in bytes, of the fetched resource, including the response header fields and the response payload body. |
-| `browser.resource_timing.worker_start` | `double` | Time immediately before the request is dispatched to a service worker. |
+| `browser.resource_timing.request_start` | `double` | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts requesting the resource from the server. |
+| `browser.resource_timing.response_end` | `double` | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. |
+| `browser.resource_timing.response_start` | `double` | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the first byte of the response. |
+| `browser.resource_timing.secure_connection_start` | `double` | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the handshake process to secure the connection. |
+| `browser.resource_timing.transfer_size` | `int` | The transfer size of the resource, in bytes, as reported by the browser. |
+| `browser.resource_timing.worker_start` | `double` | Time, in milliseconds relative to the time origin of the document, immediately before the request is dispatched to a service worker. |

@@ -10,7 +10,7 @@
 
 This event represents a message written to the browser console.
 
-The body of the event is the serialized console arguments.
+The body of the event is the serialized console arguments. The default severity number is DEBUG (5) for `debug`, INFO (9) for `log` and `info`, WARN (13) for `warn`, and ERROR (17) for `error`.
 
 | Attribute | Type | Requirement level | Description |
 |---|---|---|---|
@@ -23,6 +23,8 @@ The body of the event is the serialized console arguments.
 **Requirement level:** recommended
 
 This event represents a navigation to a page, either a full document load or a same-document navigation performed by the application.
+
+The default severity number is INFO (9).
 
 | Attribute | Type | Requirement level | Description |
 |---|---|---|---|
@@ -39,7 +41,7 @@ This event represents a navigation to a page, either a full document load or a s
 
 This event represents the timing milestones the browser recorded while loading the current document, as reported by the [PerformanceNavigationTiming](https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming) API.
 
-`PerformanceNavigationTiming` extends `PerformanceResourceTiming`, so this event reports the inherited timings and transfer sizes using the same `browser.resource_timing.*` attributes as the `browser.resource_timing` event.
+`PerformanceNavigationTiming` extends `PerformanceResourceTiming`, so this event reports a subset of the inherited timings and transfer sizes using the same `browser.resource_timing.*` attributes as the `browser.resource_timing` event. Load milestones that have not been reached when the event is recorded have a value of zero. The default severity number is INFO (9).
 
 | Attribute | Type | Requirement level | Description |
 |---|---|---|---|
@@ -53,19 +55,19 @@ This event represents the timing milestones the browser recorded while loading t
 | `browser.navigation_timing.type` | `enum` | required | The type of the navigation, as reported by [`PerformanceNavigationTiming.type`](https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming/type). |
 | `browser.navigation_timing.unload_event_end` | `double` | required | Time, in milliseconds relative to the start of the navigation, immediately after the `unload` event handlers of the previous document finish running. |
 | `browser.navigation_timing.unload_event_start` | `double` | required | Time, in milliseconds relative to the start of the navigation, immediately before the `unload` event handlers of the previous document start to run. |
-| `browser.resource_timing.connect_end` | `double` | required | Time immediately after the browser finishes establishing the connection to the server. |
-| `browser.resource_timing.connect_start` | `double` | required | Time immediately before the browser starts to establish the connection to the server. |
+| `browser.resource_timing.connect_end` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes establishing the connection to the server. |
+| `browser.resource_timing.connect_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to establish the connection to the server. |
 | `browser.resource_timing.decoded_body_size` | `int` | required | The size, in bytes, of the message body after removing any applied content encoding. |
-| `browser.resource_timing.domain_lookup_end` | `double` | required | Time immediately after the browser finishes the domain name lookup for the resource. |
-| `browser.resource_timing.domain_lookup_start` | `double` | required | Time immediately before the browser starts the domain name lookup for the resource. |
-| `browser.resource_timing.duration` | `double` | required | The total time, in milliseconds, taken to fetch the resource. |
+| `browser.resource_timing.domain_lookup_end` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes the domain name lookup for the resource. |
+| `browser.resource_timing.domain_lookup_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the domain name lookup for the resource. |
+| `browser.resource_timing.duration` | `double` | required | Time, in milliseconds, from the start of the navigation to the end of the load event. |
 | `browser.resource_timing.encoded_body_size` | `int` | required | The size, in bytes, of the payload body as received from the network, before removing any applied content encoding. |
-| `browser.resource_timing.fetch_start` | `double` | required | Time immediately before the browser starts to fetch the resource. |
-| `browser.resource_timing.request_start` | `double` | required | Time immediately before the browser starts requesting the resource from the server. |
-| `browser.resource_timing.response_end` | `double` | required | Time immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. |
-| `browser.resource_timing.response_start` | `double` | required | Time immediately after the browser receives the first byte of the response. |
-| `browser.resource_timing.secure_connection_start` | `double` | required | Time immediately before the browser starts the handshake process to secure the connection. |
-| `browser.resource_timing.transfer_size` | `int` | required | The size, in bytes, of the fetched resource, including the response header fields and the response payload body. |
+| `browser.resource_timing.fetch_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to fetch the resource. |
+| `browser.resource_timing.request_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts requesting the resource from the server. |
+| `browser.resource_timing.response_end` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. |
+| `browser.resource_timing.response_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the first byte of the response. |
+| `browser.resource_timing.secure_connection_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the handshake process to secure the connection. |
+| `browser.resource_timing.transfer_size` | `int` | required | The transfer size of the resource, in bytes, as reported by the browser. |
 | `url.full` | `string` | required | The URL of the document. |
 
 ## `browser.resource_timing`
@@ -76,27 +78,27 @@ This event represents the timing milestones the browser recorded while loading t
 
 This event represents the loading of a single resource by the page, as reported by the [PerformanceResourceTiming](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming) API.
 
-The timings are in milliseconds, relative to the time origin of the document. For a cross-origin resource that is not served with a `Timing-Allow-Origin` response header field, the browser reports zero for most of these timings and sizes, so a zero here can mean the value is not available rather than that the step took no time.
+The timings are in milliseconds, relative to the time origin of the document. For a cross-origin resource that is not served with a `Timing-Allow-Origin` response header field, the browser reports zero for most of these timings and sizes, so a zero here can mean the value is not available rather than that the step took no time. The default severity number is INFO (9).
 
 | Attribute | Type | Requirement level | Description |
 |---|---|---|---|
-| `browser.resource_timing.connect_end` | `double` | required | Time immediately after the browser finishes establishing the connection to the server. |
-| `browser.resource_timing.connect_start` | `double` | required | Time immediately before the browser starts to establish the connection to the server. |
+| `browser.resource_timing.connect_end` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes establishing the connection to the server. |
+| `browser.resource_timing.connect_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to establish the connection to the server. |
 | `browser.resource_timing.decoded_body_size` | `int` | required | The size, in bytes, of the message body after removing any applied content encoding. |
-| `browser.resource_timing.domain_lookup_end` | `double` | required | Time immediately after the browser finishes the domain name lookup for the resource. |
-| `browser.resource_timing.domain_lookup_start` | `double` | required | Time immediately before the browser starts the domain name lookup for the resource. |
+| `browser.resource_timing.domain_lookup_end` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes the domain name lookup for the resource. |
+| `browser.resource_timing.domain_lookup_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the domain name lookup for the resource. |
 | `browser.resource_timing.duration` | `double` | required | The total time, in milliseconds, taken to fetch the resource. |
 | `browser.resource_timing.encoded_body_size` | `int` | required | The size, in bytes, of the payload body as received from the network, before removing any applied content encoding. |
-| `browser.resource_timing.fetch_start` | `double` | required | Time immediately before the browser starts to fetch the resource. |
+| `browser.resource_timing.fetch_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to fetch the resource. |
 | `browser.resource_timing.initiator_type` | `string` | required | The type of the resource that initiated the performance entry, as reported by [`PerformanceResourceTiming.initiatorType`](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/initiatorType). |
 | `browser.resource_timing.next_hop_protocol` | `string` | required | The network protocol used to fetch the resource, as identified by the [ALPN Protocol ID](https://www.rfc-editor.org/rfc/rfc7301.html). |
-| `browser.resource_timing.redirect_end` | `double` | required | Time immediately after receiving the last byte of the response of the last redirect. |
-| `browser.resource_timing.redirect_start` | `double` | required | Time of the start of the fetch that initiated the first redirect. |
+| `browser.resource_timing.redirect_end` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after receiving the last byte of the response of the last redirect. |
+| `browser.resource_timing.redirect_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, at the start of the fetch that initiated the first redirect. |
 | `browser.resource_timing.render_blocking_status` | `enum` | recommended | The render-blocking status of the resource, as reported by [`PerformanceResourceTiming.renderBlockingStatus`](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/renderBlockingStatus). |
-| `browser.resource_timing.request_start` | `double` | required | Time immediately before the browser starts requesting the resource from the server. |
-| `browser.resource_timing.response_end` | `double` | required | Time immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. |
-| `browser.resource_timing.response_start` | `double` | required | Time immediately after the browser receives the first byte of the response. |
-| `browser.resource_timing.secure_connection_start` | `double` | required | Time immediately before the browser starts the handshake process to secure the connection. |
-| `browser.resource_timing.transfer_size` | `int` | required | The size, in bytes, of the fetched resource, including the response header fields and the response payload body. |
-| `browser.resource_timing.worker_start` | `double` | required | Time immediately before the request is dispatched to a service worker. |
+| `browser.resource_timing.request_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts requesting the resource from the server. |
+| `browser.resource_timing.response_end` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. |
+| `browser.resource_timing.response_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the first byte of the response. |
+| `browser.resource_timing.secure_connection_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the handshake process to secure the connection. |
+| `browser.resource_timing.transfer_size` | `int` | required | The transfer size of the resource, in bytes, as reported by the browser. |
+| `browser.resource_timing.worker_start` | `double` | required | Time, in milliseconds relative to the time origin of the document, immediately before the request is dispatched to a service worker. |
 | `url.full` | `string` | required | The URL of the resource. |

@@ -8,6 +8,8 @@ events:
       This event represents a message written to the browser console.
     note: >
       The body of the event is the serialized console arguments.
+      The default severity number is DEBUG (5) for `debug`, INFO (9) for `log` and `info`,
+      WARN (13) for `warn`, and ERROR (17) for `error`.
     attributes:
       - ref: browser.console.method
         requirement_level: required
@@ -18,6 +20,8 @@ events:
     brief: >
       This event represents a navigation to a page, either a full document load or a
       same-document navigation performed by the application.
+    note: >
+      The default severity number is INFO (9).
     attributes:
       - ref: url.full
         requirement_level: required
@@ -41,9 +45,11 @@ events:
       [PerformanceNavigationTiming](https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming)
       API.
     note: >
-      `PerformanceNavigationTiming` extends `PerformanceResourceTiming`, so this event reports the
-      inherited timings and transfer sizes using the same `browser.resource_timing.*` attributes as
-      the `browser.resource_timing` event.
+      `PerformanceNavigationTiming` extends `PerformanceResourceTiming`, so this event reports a
+      subset of the inherited timings and transfer sizes using the same `browser.resource_timing.*`
+      attributes as the `browser.resource_timing` event.
+      Load milestones that have not been reached when the event is recorded have a value of zero.
+      The default severity number is INFO (9).
     attributes:
       - ref: url.full
         requirement_level: required
@@ -70,6 +76,8 @@ events:
         requirement_level: required
       - ref: browser.resource_timing.duration
         requirement_level: required
+        brief: >
+          Time, in milliseconds, from the start of the navigation to the end of the load event.
       - ref: browser.resource_timing.fetch_start
         requirement_level: required
       - ref: browser.resource_timing.domain_lookup_start
@@ -107,6 +115,7 @@ events:
       For a cross-origin resource that is not served with a `Timing-Allow-Origin` response header
       field, the browser reports zero for most of these timings and sizes, so a zero here can mean
       the value is not available rather than that the step took no time.
+      The default severity number is INFO (9).
     attributes:
       - ref: url.full
         requirement_level: required

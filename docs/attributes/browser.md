@@ -18,25 +18,25 @@
 | `browser.navigation_timing.type` | `enum` | development | The type of the navigation, as reported by [`PerformanceNavigationTiming.type`](https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming/type). | `navigate` |
 | `browser.navigation_timing.unload_event_end` | `double` | development | Time, in milliseconds relative to the start of the navigation, immediately after the `unload` event handlers of the previous document finish running. | `0.0` |
 | `browser.navigation_timing.unload_event_start` | `double` | development | Time, in milliseconds relative to the start of the navigation, immediately before the `unload` event handlers of the previous document start to run. | `0.0` |
-| `browser.resource_timing.connect_end` | `double` | development | Time immediately after the browser finishes establishing the connection to the server. | `12.8` |
-| `browser.resource_timing.connect_start` | `double` | development | Time immediately before the browser starts to establish the connection to the server. | `3.6` |
+| `browser.resource_timing.connect_end` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes establishing the connection to the server. | `12.8` |
+| `browser.resource_timing.connect_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to establish the connection to the server. | `3.6` |
 | `browser.resource_timing.decoded_body_size` | `int` | development | The size, in bytes, of the message body after removing any applied content encoding. | `10240` |
-| `browser.resource_timing.domain_lookup_end` | `double` | development | Time immediately after the browser finishes the domain name lookup for the resource. | `3.6` |
-| `browser.resource_timing.domain_lookup_start` | `double` | development | Time immediately before the browser starts the domain name lookup for the resource. | `1.4` |
+| `browser.resource_timing.domain_lookup_end` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately after the browser finishes the domain name lookup for the resource. | `3.6` |
+| `browser.resource_timing.domain_lookup_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the domain name lookup for the resource. | `1.4` |
 | `browser.resource_timing.duration` | `double` | development | The total time, in milliseconds, taken to fetch the resource. | `42.3` |
 | `browser.resource_timing.encoded_body_size` | `int` | development | The size, in bytes, of the payload body as received from the network, before removing any applied content encoding. | `3840` |
-| `browser.resource_timing.fetch_start` | `double` | development | Time immediately before the browser starts to fetch the resource. | `1.2` |
+| `browser.resource_timing.fetch_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts to fetch the resource. | `1.2` |
 | `browser.resource_timing.initiator_type` | `string` | development | The type of the resource that initiated the performance entry, as reported by [`PerformanceResourceTiming.initiatorType`](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/initiatorType). | `script`, `link`, `img`, `fetch`, `xmlhttprequest` |
 | `browser.resource_timing.next_hop_protocol` | `string` | development | The network protocol used to fetch the resource, as identified by the [ALPN Protocol ID](https://www.rfc-editor.org/rfc/rfc7301.html). | `http/1.1`, `h2`, `h3` |
-| `browser.resource_timing.redirect_end` | `double` | development | Time immediately after receiving the last byte of the response of the last redirect. | `0.0` |
-| `browser.resource_timing.redirect_start` | `double` | development | Time of the start of the fetch that initiated the first redirect. | `0.0` |
+| `browser.resource_timing.redirect_end` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately after receiving the last byte of the response of the last redirect. | `0.0` |
+| `browser.resource_timing.redirect_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, at the start of the fetch that initiated the first redirect. | `0.0` |
 | `browser.resource_timing.render_blocking_status` | `enum` | development | The render-blocking status of the resource, as reported by [`PerformanceResourceTiming.renderBlockingStatus`](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming/renderBlockingStatus). | `blocking` |
-| `browser.resource_timing.request_start` | `double` | development | Time immediately before the browser starts requesting the resource from the server. | `12.9` |
-| `browser.resource_timing.response_end` | `double` | development | Time immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. | `43.5` |
-| `browser.resource_timing.response_start` | `double` | development | Time immediately after the browser receives the first byte of the response. | `38.1` |
-| `browser.resource_timing.secure_connection_start` | `double` | development | Time immediately before the browser starts the handshake process to secure the connection. | `6.0` |
-| `browser.resource_timing.transfer_size` | `int` | development | The size, in bytes, of the fetched resource, including the response header fields and the response payload body. | `4096` |
-| `browser.resource_timing.worker_start` | `double` | development | Time immediately before the request is dispatched to a service worker. | `0.0`, `12.1` |
+| `browser.resource_timing.request_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts requesting the resource from the server. | `12.9` |
+| `browser.resource_timing.response_end` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the last byte of the resource, or immediately before the transport connection is closed, whichever comes first. | `43.5` |
+| `browser.resource_timing.response_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately after the browser receives the first byte of the response. | `38.1` |
+| `browser.resource_timing.secure_connection_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately before the browser starts the handshake process to secure the connection. | `6.0` |
+| `browser.resource_timing.transfer_size` | `int` | development | The transfer size of the resource, in bytes, as reported by the browser. | `4096` |
+| `browser.resource_timing.worker_start` | `double` | development | Time, in milliseconds relative to the time origin of the document, immediately before the request is dispatched to a service worker. | `0.0`, `12.1` |
 
 
 ## `browser.console.method` values
@@ -70,7 +70,6 @@
 |---|---|---|
 | `back_forward` | development | Navigation through the browser's history traversal, e.g. the back or forward button. |
 | `navigate` | development | Navigation started by clicking a link, entering a URL, a form submission, or a script operation. |
-| `prerender` | development | Navigation to a page that was prerendered. |
 | `reload` | development | Navigation through a reload operation or a `Location.reload()` call. |
 
 ## `browser.resource_timing.render_blocking_status` values
@@ -102,19 +101,23 @@ Zero if there was no previous document, or if the previous document has a differ
 
 ### `browser.resource_timing.next_hop_protocol`
 
-Empty for cross-origin resources that are not served with a `Timing-Allow-Origin` response header field.
+This attribute preserves the raw ALPN protocol ID reported by the browser. `network.protocol.name` and `network.protocol.version` describe the protocol name and version separately; for example, `h2` corresponds to `http` and `2`, respectively. Empty for cross-origin resources that are not served with a `Timing-Allow-Origin` response header field.
 
 ### `browser.resource_timing.redirect_end`
 
-Zero if there was no redirect, or if a redirect is not same-origin.
+Zero if there was no redirect, or if the timing-allow checks fail.
 
 ### `browser.resource_timing.redirect_start`
 
-Zero if there was no redirect, or if a redirect is not same-origin.
+Zero if there was no redirect, or if the timing-allow checks fail.
 
 ### `browser.resource_timing.secure_connection_start`
 
 Zero if the resource is not fetched over a secure connection.
+
+### `browser.resource_timing.transfer_size`
+
+The browser uses a fixed 300-byte allowance for response headers, added to the encoded body size. For locally cached responses the transfer size is zero; for revalidated cached responses it is 300 bytes. This value is not an exact count of bytes transferred over the network.
 
 ### `browser.resource_timing.worker_start`
 
