@@ -111,6 +111,9 @@ events:
       [PerformanceResourceTiming](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming)
       API.
     note: >
+      The event timestamp MUST be set to the start of the resource load, using the entry's
+      `startTime` converted to an absolute timestamp: `performance.timeOrigin + entry.startTime`
+      in milliseconds since the Unix epoch.
       The timings are in milliseconds, relative to the time origin of the document.
       For a cross-origin resource that is not served with a `Timing-Allow-Origin` response header
       field, the browser reports zero for most of these timings and sizes, so a zero here can mean

@@ -78,7 +78,7 @@ This event represents the timing milestones the browser recorded while loading t
 
 This event represents the loading of a single resource by the page, as reported by the [PerformanceResourceTiming](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming) API.
 
-The timings are in milliseconds, relative to the time origin of the document. For a cross-origin resource that is not served with a `Timing-Allow-Origin` response header field, the browser reports zero for most of these timings and sizes, so a zero here can mean the value is not available rather than that the step took no time. The default severity number is INFO (9).
+The event timestamp MUST be set to the start of the resource load, using the entry's `startTime` converted to an absolute timestamp: `performance.timeOrigin + entry.startTime` in milliseconds since the Unix epoch. The timings are in milliseconds, relative to the time origin of the document. For a cross-origin resource that is not served with a `Timing-Allow-Origin` response header field, the browser reports zero for most of these timings and sizes, so a zero here can mean the value is not available rather than that the step took no time. The default severity number is INFO (9).
 
 | Attribute | Type | Requirement level | Description |
 |---|---|---|---|
