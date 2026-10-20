@@ -6,10 +6,6 @@ Reference documentation generated from the semantic convention definitions under
 `model/`. Only conventions defined by this registry are listed. Attributes defined
 in registries it depends on are documented in those respective repos.
 
-## Attribute groups
-
-- [Attribute groups](attribute-groups.md) — 1 group
-
 ## Attributes
 
 - [`browser`](attributes/browser.md) — 33 attributes

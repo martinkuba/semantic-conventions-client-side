@@ -16,9 +16,9 @@ MANIFESTS := model/manifest.yaml templates_test/fixture/manifest.yaml
 all: check-policies generate-all
 
 # Validate the model: schema validation, resolution of upstream dependencies, and the shared
-# OpenTelemetry policy pack (naming conventions, attribute type rules, stability requirements)
-# plus this repo's local policies. Needs network access to fetch the dependencies pinned in
-# model/manifest.yaml and the policy pack pinned in versions.env.
+# OpenTelemetry policy pack (naming conventions, attribute type rules, stability requirements).
+# Needs network access to fetch the dependencies pinned in model/manifest.yaml and the policy
+# pack pinned in versions.env.
 #
 # Two guards wrap the weaver run:
 # - A dependency's schema_url identifies the registry and version, but its registry_path is what
@@ -42,8 +42,7 @@ check-policies: check-weaver
 	weaver registry check \
 	  -r model \
 	  --v2 \
-	  --policy "$(POLICY_REPO_URL)@$(POLICY_REPO_REF)[policies/check]" \
-	  --policy policies/check/public-attribute-groups 2>&1 | tee .build/check.log
+	  --policy "$(POLICY_REPO_URL)@$(POLICY_REPO_REF)[policies/check]" 2>&1 | tee .build/check.log
 	@if grep -q "Selected version" .build/check.log; then \
 	  echo "error: dependencies request different versions of the same registry (see above)." >&2; \
 	  echo "Align the version in model/manifest.yaml with the one its other dependents request." >&2; \
