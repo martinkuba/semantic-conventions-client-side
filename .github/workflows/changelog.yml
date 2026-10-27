@@ -1,0 +1,24 @@
+name: Changelog
+
+# Requires a .chloggen/*.yaml entry on every pull request that consumers should notice, and
+# rejects direct edits to CHANGELOG.md. Pull requests with "[chore]" in the title or the
+# "Skip Changelog" or "dependencies" label are exempt, and Renovate's are skipped entirely.
+# See CONTRIBUTING.md.
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, labeled, unlabeled]
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  changelog:
+    permissions:
+      contents: read  # for actions/checkout
+      pull-requests: read  # for dorny/paths-filter to list changed files
+    uses: open-telemetry/shared-workflows/.github/workflows/chloggen.yml@efc55838c9769c5476e0a5cf7183a8c5b4ae70a5 # v0.24.0

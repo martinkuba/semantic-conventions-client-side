@@ -3,14 +3,21 @@
 
 SHELL := /usr/bin/env bash
 
-# Weaver and OPA versions, and the shared policy pack, are pinned in versions.env
+# Weaver, OPA and chloggen versions, and the shared policy pack, are pinned in versions.env
 include versions.env
 
 # Manifests whose dependencies check-policies verifies for schema_url/registry_path agreement.
 MANIFESTS := model/manifest.yaml templates_test/fixture/manifest.yaml
 
+CHLOGGEN := go run go.opentelemetry.io/build-tools/chloggen@$(CHLOGGEN_VERSION)
+CHLOGGEN_CONFIG := .chloggen/config.yaml
+
+# chlog-new names the new entry after the current branch unless FILENAME is given.
+FILENAME ?= $(shell git branch --show-current | sed 's/[^a-zA-Z0-9_-]/_/g')
+
 .PHONY: all check-policies generate-docs generate-all package test test-templates test-policies \
-	update-golden install-weaver install-opa check-weaver check-opa clean help
+	update-golden chlog-new chlog-validate chlog-preview chlog-update install-weaver install-opa \
+	check-weaver check-opa check-go clean help
 
 # Default: validate, then regenerate everything this repo owns.
 all: check-policies generate-all
@@ -121,6 +128,27 @@ update-golden: check-weaver
 test-policies: check-opa
 	opa test --explain fails policies policies_test
 
+# Add a changelog entry under .chloggen/ for the current branch, then fill it in. See CONTRIBUTING.md.
+chlog-new: check-go
+	$(CHLOGGEN) new --config $(CHLOGGEN_CONFIG) --filename $(FILENAME)
+
+# Validate every pending changelog entry under .chloggen/. CI runs this on pull requests.
+chlog-validate: check-go
+	$(CHLOGGEN) validate --config $(CHLOGGEN_CONFIG)
+
+# Print the CHANGELOG.md section the pending entries would render to, without changing anything.
+# CI link-checks this output, so the recipe itself is not echoed.
+chlog-preview: check-go
+	@$(CHLOGGEN) update --config $(CHLOGGEN_CONFIG) --dry
+
+# Render the pending entries into CHANGELOG.md as the next release's section and delete them. Run
+# in the release-prep PR (see RELEASING.md). The version is the last segment of the schema_url in
+# model/manifest.yaml, so bump that first.
+chlog-update: check-go
+	@set -eu; \
+	version="$$(awk '/^schema_url:/ { n = split($$2, parts, "/"); print parts[n]; exit }' model/manifest.yaml)"; \
+	$(CHLOGGEN) update --config $(CHLOGGEN_CONFIG) --version "v$$version"
+
 # Install the weaver version pinned in versions.env into ~/.local/bin.
 install-weaver:
 	.github/actions/setup-weaver/install-weaver.sh
@@ -152,6 +180,14 @@ check-opa:
 	  echo "warning: opa $$installed installed, but this repo pins $(OPA_VERSION:v%=%) (see versions.env)." >&2; \
 	fi
 
+# Fail if go is not on PATH. chloggen is built from source with `go run`, at the version pinned in
+# versions.env.
+check-go:
+	@command -v go >/dev/null 2>&1 || { \
+	  echo "error: go not found on PATH. Install it from https://go.dev/dl/ to run chloggen." >&2; \
+	  exit 1; \
+	}
+
 # Remove build output only. docs/ is generated but committed, so it is left alone
 clean:
 	rm -rf .build
@@ -165,6 +201,10 @@ help:
 	@echo "test-templates  check the doc templates against the golden fixture output"
 	@echo "test-policies   unit-test the local rego policies"
 	@echo "update-golden   refresh the golden files after an intended template change"
+	@echo "chlog-new       add a changelog entry under .chloggen/ for the current branch"
+	@echo "chlog-validate  validate the pending changelog entries"
+	@echo "chlog-preview   print the changelog section the pending entries render to"
+	@echo "chlog-update    render the pending entries into CHANGELOG.md (release prep)"
 	@echo "install-weaver  install the weaver version pinned in versions.env"
 	@echo "install-opa     install the OPA version pinned in versions.env"
 	@echo "clean           remove build output"
